@@ -4,6 +4,10 @@ from exceptions import InsufficientNumberOfDocumentsError
 
 
 class Document(object):
+    """
+    Represents a text document.
+    """
+
     def __init__(self, text):
         self.text = text
 
@@ -12,6 +16,10 @@ class Document(object):
 
 
 class DocumentCluster(object):
+    """
+    Represents a cluster of documents.
+    """
+
     def __init__(self, initial_doc):
         self.documents = {initial_doc}
         self.centroid_terms = {}
@@ -28,6 +36,15 @@ class DocumentCluster(object):
 
 
 def generate_document_clusters(documents, num_clusters):
+    """
+    Given a list of documents and a number of clusters, it generates a list of
+    documents.
+
+    :param documents: An iterable list of Document instances.
+    :type documents: list.
+    :param num_clusters: Number of cluster to be generated.
+    :type num_clusters: int/
+    """
     if len(documents) < num_clusters:
         msg = ('Insufficient number of documents ({docs_len}) for '
                'the amount of clusters requested ({num_clusters})')
