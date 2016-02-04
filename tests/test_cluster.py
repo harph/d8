@@ -15,7 +15,7 @@ class TestGenerateCluster(unittest.TestCase):
             Document('Ut porttitor sem justo, id pharetra ipsum maximus eu.'),
         ]
 
-    def test_clusters_len(self):
+    def test_number_of_clusters(self):
         """
         Tests that the number of clusters returned matches the requested
         number.
