@@ -1,7 +1,7 @@
 import unittest
 
 from d8.clusters import generate_document_clusters
-from d8.exceptions import InsufficientNumberOfDocumentError
+from d8.exceptions import InsufficientNumberOfDocumentsError
 
 
 class TestGenerateCluster(unittest.TestCase):
@@ -27,7 +27,7 @@ class TestGenerateCluster(unittest.TestCase):
         number of clusters requested is greater than the number of given
         documents.
         """
-        with self.assertRaises(InsufficientNumberOfDocumentError):
+        with self.assertRaises(InsufficientNumberOfDocumentsError):
             generate_document_clusters(self.documents, len(self.documents) + 1)
 
 

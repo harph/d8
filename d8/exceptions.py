@@ -1,3 +1,4 @@
-class InsufficientNumberOfDocumentError(Exception):
-    def __init__(self, msg):
-        self.msg = msg
+class InsufficientNumberOfDocumentsError(Exception):
+    def __init__(self, message):
+        self.message = message
+        super(InsufficientNumberOfDocumentsError, self).__init__(message)
