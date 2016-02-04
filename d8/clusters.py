@@ -40,10 +40,13 @@ def generate_document_clusters(documents, num_clusters):
     Given a list of documents and a number of clusters, it generates a list of
     documents.
 
-    :param documents: An iterable list of Document instances.
-    :type documents: list.
-    :param num_clusters: Number of cluster to be generated.
-    :type num_clusters: int/
+    Args:
+        documents (list): An iterable list of Document instances.
+        num_clusters (int): Number of cluster to be generated.
+
+    Returns:
+        list: List of length 'num_clusters' containin DocumentCluster
+        instances.
     """
     if len(documents) < num_clusters:
         msg = ('Insufficient number of documents ({docs_len}) for '
