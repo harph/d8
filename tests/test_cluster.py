@@ -15,6 +15,15 @@ class TestGenerateCluster(unittest.TestCase):
             Document('Ut porttitor sem justo, id pharetra ipsum maximus eu.'),
         ]
 
+    def test_insuficient_number_of_documents(self):
+        """
+        Tests that generate_document_clusters raises an exception if the
+        number of clusters requested is greater than the number of given
+        documents.
+        """
+        with self.assertRaises(InsufficientNumberOfDocumentsError):
+            generate_document_clusters(self.documents, len(self.documents) + 1)
+
     def test_number_of_clusters(self):
         """
         Tests that the number of clusters returned matches the requested
@@ -42,15 +51,6 @@ class TestGenerateCluster(unittest.TestCase):
                             requested=n_clusters
                          )
             self.assertEquals(len(doc_clusters), n_clusters, error_msg)
-
-    def test_insuficient_number_of_documents(self):
-        """
-        Tests that generate_document_clusters raises an exception if the
-        number of clusters requested is greater than the number of given
-        documents.
-        """
-        with self.assertRaises(InsufficientNumberOfDocumentsError):
-            generate_document_clusters(self.documents, len(self.documents) + 1)
 
 
 if __name__ == '__main__':
