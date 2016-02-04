@@ -1,6 +1,8 @@
 import random
+import sys
 
-from exceptions import InsufficientNumberOfDocumentsError
+from exceptions import (InsufficientNumberOfDocumentsError,
+                        InvalidNumberOfClustersError)
 
 
 class Document(object):
@@ -10,6 +12,23 @@ class Document(object):
 
     def __init__(self, text):
         self.text = text
+
+    def _recalculate_terms(self):
+        # TODO: calculate terms using a steamer and removing stop words
+        self._terms = set(self.text.split())
+
+    @property
+    def terms(self):
+        return self._terms
+
+    @property
+    def text(self):
+        return self._text
+
+    @text.setter
+    def text(self, value):
+        self._text = value
+        self._recalculate_terms()
 
     def __unicode__(self):
         return self.text
@@ -22,7 +41,11 @@ class DocumentCluster(object):
 
     def __init__(self, initial_doc):
         self.documents = {initial_doc}
-        self.centroid_terms = {}
+        self.centroid = None
+        self.recalculate_centroid()
+
+    def __len__(self):
+        return len(self.documents)
 
     def __unicode__(self):
         return self.name
@@ -32,8 +55,24 @@ class DocumentCluster(object):
         return '_'.join(self.centroid_terms)
 
     def recalculate_centroid(self):
-        pass
+        self.centroid = reduce(lambda acum, doc: acum.union(doc.terms),
+                               self.documents, set())
 
+    def get_distance_to_centroid(self, document):
+        """
+        Calculates the distance between the document and the centroid. This is
+        based on tghe different between the centroid and document terms.
+        
+        Args:
+            document (Document): Document instance for which the distance is
+            going to be calculated.
+
+        Returns:
+            int: Positive value representing distance of the document to the
+            centroid.
+        """
+        diff = self.centroid - document.terms
+        return len(diff)
 
 def generate_document_clusters(documents, num_clusters):
     """
@@ -48,15 +87,31 @@ def generate_document_clusters(documents, num_clusters):
         list: List of length 'num_clusters' containin DocumentCluster
         instances.
     """
+    if num_clusters <= 0:
+        raise InvalidNumberOfClustersError(
+            'Number of clusters must be greater than 0')
+
     if len(documents) < num_clusters:
         msg = ('Insufficient number of documents ({docs_len}) for '
                'the amount of clusters requested ({num_clusters})')
         raise InsufficientNumberOfDocumentsError(
             msg.format(docs_len=len(documents), num_clusters=num_clusters))
 
-    clusters = [
+    # Pick randomily one document per cluster.
+    document_clusters = [
         DocumentCluster(doc)
         for doc in random.sample(documents, num_clusters)
     ]
 
-    return clusters
+    for doc in documents:
+        best_cluster = None
+        min_distance = sys.maxint
+        for cluster in document_clusters:
+            #if doc not int cluster:
+            distance = cluster.get_distance_to_centroid(doc)
+            if distance < min_distance:
+                best_cluster = cluster
+                min_distance = distance
+        best_cluster.documents.add(doc)
+
+    return document_clusters
