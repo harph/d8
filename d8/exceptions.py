@@ -2,5 +2,5 @@ class InsufficientNumberOfDocumentsError(Exception):
     pass
 
 
-class NumberOfClustersError(Exception):
+class InvalidNumberOfClustersError(Exception):
     pass
