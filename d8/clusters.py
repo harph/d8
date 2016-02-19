@@ -13,6 +13,9 @@ class Document(object):
     def __init__(self, text):
         self.text = text
 
+    def __unicode__(self):
+        return self.text
+
     def _recalculate_terms(self):
         # TODO: calculate terms using a steamer and removing stop words
         self._terms = set(self.text.split())
@@ -30,9 +33,6 @@ class Document(object):
         self._text = value
         self._recalculate_terms()
 
-    def __unicode__(self):
-        return self.text
-
 
 class DocumentCluster(object):
     """
@@ -48,7 +48,7 @@ class DocumentCluster(object):
         return len(self.documents)
 
     def __unicode__(self):
-        return self.name
+        return "%s, %d" %(self.name, len(self.documents))
 
     @property
     def name(self):
