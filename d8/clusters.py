@@ -61,7 +61,7 @@ class DocumentCluster(object):
     def get_distance_to_centroid(self, document):
         """
         Calculates the distance between the document and the centroid. This is
-        based on tghe different between the centroid and document terms.
+        based on the different between the centroid and document terms.
         
         Args:
             document (Document): Document instance for which the distance is
